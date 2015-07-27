@@ -49,9 +49,7 @@ VOLUME /var/lib/rabbitmq
 # add a symlink to the .erlang.cookie in /root so we can "docker exec rabbitmqctl ..." without gosu
 RUN ln -sf /var/lib/rabbitmq/.erlang.cookie /root/
 
-RUN rabbitmqctl add_user user password
-RUN rabbitmqctl add_vhost vhost
-RUN rabbitmqctl set_permissions -p vhost user ".*" ".*" ".*"
+COPY docker-entrypoint.sh /
 
 EXPOSE 5672
-CMD ["rabbitmq-server"]
+CMD docker-entrypoint.sh
